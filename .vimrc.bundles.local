@@ -1,0 +1,8 @@
+Bundle 'fatih/vim-go'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'vim-scripts/JavaScript-Indent'
+Bundle 'Konfekt/FastFold'
+Bundle 'AndrewRadev/splitjoin.vim'
+Bundle 'shime/vim-livedown'
+"Bundle 'Valloric/YouCompleteMe'
+"Bundle 'SirVer/ultisnips'

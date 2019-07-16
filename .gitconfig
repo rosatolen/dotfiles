@@ -1,0 +1,17 @@
+[core]
+    editor = '/usr/bin/vim'
+[user]
+    name = Rosalie Tolentino
+    email = rtolenti@thoughtworks.com
+    signingkey = 6535110E11C9FF82C909100FE650DFA74AD8368A
+[commit]
+    gpgsign = true
+[gpg]
+    program = gpg2
+[push]
+    default = simple
+[format]
+    pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
+[pager]
+    diff = diff-so-fancy | less --tabs=1,5 -RFX
+    show = diff-so-fancy | less --tabs=1,5 -RFX

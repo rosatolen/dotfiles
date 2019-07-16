@@ -1,0 +1,15 @@
+default: lint test
+
+deps:
+	vim . +GoInstallBinaries
+	gometalinter --install
+
+lint:
+	golint ./...
+
+test:
+	go test -cover -v ./...
+
+EXECUTABLE_NAME=program
+build:
+	go build -o ${EXECUTABLE_NAME} main.go

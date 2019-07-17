@@ -1,8 +1,8 @@
 ### Experimental
 alias ping='prettyping --nolegend'
 
+### FZF
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-#export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
 export FZF_DEFAULT_OPTS="--bind='ctrl-j:execute(vim {})+abort,ctrl-o:execute(vim {})+abort'"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 export FZF_CTRL_R_OPTS="--reverse --bind='ctrl-j:execute(echo {})+abort'"

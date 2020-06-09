@@ -2,7 +2,7 @@
     editor = '/usr/bin/vim'
 [user]
     name = Rosalie Tolentino
-    email = rtolenti@thoughtworks.com
+    email = rosatolen@gmail.com
     signingkey = 6535110E11C9FF82C909100FE650DFA74AD8368A
 [commit]
     gpgsign = true

@@ -1,0 +1,39 @@
+# Colors (./vim/colors)
+https://github.com/jnurmine/Zenburn
+
+# Javascript
+https://github.com/pangloss/vim-javascript
+https://github.com/MaxMEllon/vim-jsx-pretty
+https://github.com/styled-components/vim-styled-components
+
+https://github.com/jiangmiao/auto-pairs
+
+# search
+https://github.com/mileszs/ack.vim
+https://github.com/junegunn/fzf.vim
+
+# git
+https://github.com/tpope/vim-fugitive
+https://github.com/shumphrey/fugitive-gitlab.vim
+
+# vim-life
+https://github.com/tpope/vim-obsession
+https://github.com/tpope/vim-sensible
+https://github.com/tpope/vim-vinegar
+
+# coding
+https://github.com/tpope/vim-surround
+https://github.com/tpope/vim-dispatch
+https://github.com/vim-test/vim-test
+
+# ruby
+https://github.com/tpope/vim-bundler
+https://github.com/tpope/vim-endwise
+https://github.com/tpope/vim-rails
+https://github.com/tpope/vim-rbenv
+https://github.com/tpope/vim-rake
+https://github.com/vim-ruby/vim-ruby
+
+# TRIALING
+https://github.com/tpope/vim-commentary
+https://github.com/tpope/vim-projectionist

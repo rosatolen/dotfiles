@@ -1,5 +1,9 @@
-filetype plugin indent on
-syntax on
+""" SET IN sensible.vim
+"filetype plugin indent on
+"syntax on
+" I had to set leader key in sensible.vim??
+"let mapleader=","
+
 set number
 set relativenumber
 set list
@@ -16,40 +20,63 @@ set shell=bash
 """ Tags
 set tags=./tags,tags:$HOME
 
-""" Undo
+""" Undo & Swap
 set undofile
-set undodir=$HOME/.vimundo
-
-""" Search
-set incsearch
-set hlsearch
-set ignorecase smartcase " make searches case-sensitive only if they contain upper-case characters
+set undodir=$HOME/.vim/vimundo
+set directory^=$HOME/.vim/vimswap
 
 """ Tabs
-" commenting in lieu of tpope/vim-sleuth
-"set expandtab " use spaces to insert tab. to override, use CTRL-V-<Tab>
-"set tabstop=4
-"set shiftwidth=4
-"set softtabstop=4
-"set autoindent
+set expandtab " use spaces to insert tab. to override, use CTRL-V-<Tab>
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autoindent
 
 """ Leader Keys
-let mapleader=","
 " Saving
 nmap <leader>w :wa<CR>
 " Quitting
 nmap <leader>q :wqa<CR>
 " Split All Buffers
-nmap <leader>s :sba<CR>
-nmap <leader>v :vert sba<CR>
+nmap <leader>sp :sba<CR>
+nmap <leader>v:vert sba<CR>
 " Remove Highlighting
-nmap <leader>j :noh<CR>
+" replaced by <C-L> in tpope/sensible.vim
+"nmap <leader>j :noh<CR>
 " Toggle AutoPairs
-let g:AutoPairsShortcutToggle="<leader>p"
+let g:"AutoPairsShortcutToggle="<leader>p"
 " Toggle auto-format
 "set formatoptions+=a
 nmap <leader>fy :set formatoptions+=a<CR>
 nmap <leader>fn :set formatoptions-=a<CR>
+"
+""" Search
+set incsearch
+set hlsearch
+set ignorecase smartcase " make searches case-sensitive only if they contain upper-case characters
+
+if filereadable("cscope.out")
+    cs add cscope.out
+    " else add database pointed to by environment
+ elseif $CSCOPE_DB != ""
+     cs add $CSCOPE_DB
+endif
+
+" Ack.vim
+let g:ackprg = 'rg --hidden --vimgrep --no-heading'
+nmap <leader>s :Ack!<cr>
+
+" CtrlP
+let g:ctrlp_show_hidden = 1
+
+" Use ripgrep
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command = 'rg %s --hidden --files --color=never --glob ""'
+  let g:ctrlp_use_caching = 0
+else
+  let g:ctrlp_clear_cache_on_exit = 0
+endif
 
 """ Formatting
 function NativeFormat()
@@ -69,47 +96,13 @@ function KeepCursorLine(funcToExe)
   call winrestview(current_window)
 endfunction
 
-""" CtrlP
-" Use ack's defaults to list files
-let g:ctrlp_user_command = 'ack -f %s'
-let g:ctrlp_show_hidden = 1
-
-""" Grep
-set grepprg=ack
-
 """ Colorscheme
 colorscheme zenburn
-
-""" Syntastic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_debug = 0
-
-""" Tagbar
-nmap <F8> :TagbarToggle<CR>
 
 """ Plugins
 set loadplugins
 packloadall
 silent! helptags ALL
-
-""" Formatting
-function AggressiveFormat()
-  silent! gg=G
-endfunction
-
-""" Ruby
-" RUBOCOP IS SUPER SLOW :/
-"function AggressiveRuboCop()
-"  silent! :RuboCop
-"endfunction
-autocmd BufWritePre *.rb :call KeepCursorLine(function('AggressiveFormat'))
 
 """ Golang
 " Using vim-go plugin until I understand how to use golang's guru tools
@@ -124,25 +117,12 @@ function AggressiveShellLint()
 endfunction
 autocmd BufWritePre *.sh :call KeepCursorLine(function('AggressiveShellLint'))
 autocmd BufWritePre .profile :call KeepCursorLine(function('AggressiveShellLint'))
-"""" .envrc
 autocmd BufWritePre .envrc :call KeepCursorLine(function('AggressiveShellLint'))
 autocmd BufRead,BufNewFile .envrc set filetype=sh
 autocmd BufWritePre .envrc set filetype=sh
-"""" .direnvrc
 autocmd BufWritePre .direnvrc :call KeepCursorLine(function('AggressiveShellLint'))
 autocmd BufRead,BufNewFile .direnvrc set filetype=sh
 autocmd BufWritePre .direnvrc set filetype=sh
-"""" *.profile
-autocmd BufWritePre *.profile :call KeepCursorLine(function('AggressiveShellLint'))
-autocmd BufRead,BufNewFile *.profile set filetype=sh
-autocmd BufWritePre *.profile set filetype=sh
-
-""" Terraform
-function AggressiveTFFormat()
-  silent! :TerraformFmt
-endfunction
-autocmd BufWritePre *.tf :call KeepCursorLine(function('AggressiveTFFormat'))
-autocmd BufRead,BufNewFile *.tf :call KeepCursorLine(function('AggressiveTFFormat'))
 
 """ JSON
 function AggressiveJSONFormat()
@@ -167,21 +147,94 @@ endfunction
 autocmd BufRead,BufNewFile *.html :call KeepCursorLine(function('AggressiveHTMLFormat'))
 
 """ Rust
+"function AggressiveRustFormat()
+"  silent! %!rustfmt --emit stdout
+"endfunction
+"autocmd BufWritePre *.rs :call KeepCursorLine(function('AggressiveRustFormat'))
 " Using rust-lang/rust.vim and racer with vim-racer
 let g:rustfmt_autosave = 1
-let g:racer_cmd = "/home/rosatolen/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
-let g:racer_insert_paren = 1
 autocmd FileType rust nmap gd <Plug>(rust-def)
-autocmd FileType rust nmap <leader>gd <Plug>(rust-doc)
 autocmd FileType rust nmap gds <Plug>(rust-def-split)
 autocmd FileType rust nmap gdv <Plug>(rust-def-vertical)
+autocmd FileType rust nmap <S-k> <Plug>(rust-doc)
+let g:racer_experimental_completer = 1
 
+""" Ruby
 
+set tag+=/Users/rosatolen/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/tags
+set tag+=/Users/rosatolen/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/tags
 
+""" Javascript
 
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascriptreact setlocal shiftwidth=2 tabstop=2
 
+""" Linting
 
+"""" CoC
+" Recommended
+set nobackup
+set nowritebackup
+" Not needed
+" set cmdheight=2
+set updatetime=300
+set signcolumn=number
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <c-@> coc#refresh()
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+"""" Ale
+"let g:ale_sign_error = '❌'
+"let g:ale_sign_warning = '⚠️ '
+"let g:ale_fix_on_save = 1
+"let g:ale_linters = {
+"\   'ruby': ['rubocop'],
+"\}
+"let g:ale_fixers = {
+"\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+"\   'ruby': ['standardrb', 'remove_trailing_lines', 'trim_whitespace'],
+"\   'javascript': ['eslint', 'prettier'],
+"\   'typescript': ['eslint'],
+"\   'css': ['prettier']
+"\}
+
+""" Testing
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+
+let test#strategy = 'basic'
+"let test#strategy = 'dispatch'
+let g:dispatch_quickfix_height=15
+
+""" Git
+
+let g:fugitive_gitlab_domains = ['https://gitlab.checkrhq.net']
+let g:gitlab_api_keys = {'gitlab.checkrhq.net': 'sYzEfSUt188PvRvRoXxD'}
 
 """ BELOW THERE BE WIP
 

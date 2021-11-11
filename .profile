@@ -1,13 +1,21 @@
+### 1Password
+
+# Only do when I need my GPG password
+#eval "export OP_SESSION=$(op signin my --raw)"
+
+### go projet
+
+alias goexp='cd ~/repos/expungements/'
+alias goint='cd ~/repos/integration-services/'
+
 ### Experimental
 alias ping='prettyping --nolegend'
 
 ### FZF
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS="--bind='ctrl-j:execute(vim {})+abort,ctrl-o:execute(vim {})+abort'"
-alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias o="fzf --preview 'bat --color \"always\" {}'"
 export FZF_CTRL_R_OPTS="--reverse --bind='ctrl-j:execute(echo {})+abort'"
-. /usr/share/fzf/key-bindings.bash
-. /usr/share/fzf/completion.bash
 
 #alias find='fd'
 
@@ -43,6 +51,10 @@ ackjson() {
     ack -f --type=json | ack --files-from=- "$@"
 }
 
+### Rg
+
+alias rg='rg --hidden'
+
 ### Find
 
 fzvi() {
@@ -73,6 +85,8 @@ systemctl_list() { systemctl list-unit-files; }
 export EDITOR=vim
 export VISUAL=vim
 
+vs() { vim -S Session.vim; }
+
 v() { vim .; }
 
 vi() { vim "$@"; }
@@ -82,7 +96,7 @@ ev() { vim ~/.vimrc; }
 # For piping input you wish to read with syntax highlighting
 vimro() { vim -R -; }
 
-vimplugin() {
+vimpack() {
     PACK_DIR=~/.vim/pack/
     if cd "$PACK_DIR"; then
         echo "You are in $PWD. Install packages here. The directory heirarchy scheme is:"
@@ -444,8 +458,12 @@ dbadlinks() { find ~ -xtype l -delete; }
 
 ### Copy-pasting
 
-alias c='tr --delete "\n" | xclip -sel clip'
-alias cwn='xclip -sel clip'
+# Linux specific
+#alias c='tr --delete "\n" | xclip -sel clip'
+#alias cwn='xclip -sel clip'
+
+# Mac specific
+alias c='tr --delete "\n" | pbcopy'
 
 clipfile () {
     if [ "$#" -ne 1 ]; then
@@ -473,9 +491,11 @@ diceware() {
 
 ### Git
 
-gpullr() { p github/rosatolen/ssh; git pull -r; }
+gpr() { p github/rosatolen/ssh; git pull -r; }
 gpush() { p github/rosatolen/ssh; git push; }
 gstashcachedsavename() { git stash save "$1" --keep-index; }
+gc() { git commit -m "$@"; }
+gp() { git push origin "$(git branch | grep '*' | cut -d ' ' -f2)"; }
 
 alias gst='git status'
 alias gra='git rebase --abort'
@@ -485,7 +505,8 @@ alias gcan='git commit --amend --no-edit'
 
 ### Ruby
 
-export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
+# rbenv
+eval "$(rbenv init - bash)"
 
 ### Golang
 
@@ -571,11 +592,11 @@ alias gofzf='cd /home/rosatolen/.gopaths/fzf/src/github.com/rosatolen/fzf'
 alias gopfxtooling='cd /home/rosatolen/.gopaths/pfx-tooling/src/github.com/planetfitness/tooling'
 alias gosampleproj='cd /home/rosatolen/.gopaths/sampleproj/src/github.com/rosatolen/sampleproj'
 
-### Rust
+### Rust (not yet installed)
 
-export PATH="$HOME/.cargo/bin:$PATH"
-. "$HOME"/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
-. "$HOME"/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
+# export PATH="$HOME/.cargo/bin:$PATH"
+# . "$HOME"/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
+# . "$HOME"/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
 
 ### Direnv
 

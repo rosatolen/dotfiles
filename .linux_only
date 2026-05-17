@@ -1,0 +1,29 @@
+### Systemd
+
+systemctl_list() { systemctl list-unit-files; }
+
+### Docker
+
+sdocker() { _sudo docker "$@"; }
+
+dubuntu() { docker run --rm -it ubuntu:trusty; }
+
+dprecise() { docker run --rm -it ubuntu:precise; }
+
+dkill() { docker rm  -f "${1:?'Usage: dkill <name>'}";}
+
+dockercleanall() {
+    docker system prune -a
+}
+
+### Java
+
+intellij() {
+    if archlinux-java status | grep -q 'java-8-openjdk (default)'; then
+        bash /opt/intellij-idea-ultimate-edition/bin/idea.sh > /dev/null 2>&1 &
+        return
+    fi
+    printf 'Java 8 is required to run Intellij.\n'
+    printf 'To use Java 8, run: $ sudo archlinux-java set java-8-openjdk\n'
+}
+

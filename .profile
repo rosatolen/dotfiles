@@ -1,54 +1,20 @@
-### 1Password
-
-# Only do when I need my GPG password
-#eval "export OP_SESSION=$(op signin my --raw)"
-
-### go projet
-
-alias goexp='cd ~/repos/expungements/'
-alias goint='cd ~/repos/integration-services/'
-
-### Experimental
-alias ping='prettyping --nolegend'
+### General
 
 ### FZF
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS="--bind='ctrl-j:execute(vim {})+abort,ctrl-o:execute(vim {})+abort'"
-alias o="fzf --preview 'bat --color \"always\" {}'"
+alias f="fzf --preview 'bat --color \"always\" {}'"
 export FZF_CTRL_R_OPTS="--reverse --bind='ctrl-j:execute(echo {})+abort'"
 
-#alias find='fd'
-
+### Manage Disk Space
 alias du='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
-
-### General
 
 #export PS1='[\u@\h \W]\$ '
 export PS1='[\D{%F %T %Z}] \W \$ '
 
-termbell() {
+termbell_off() {
     gsettings set org.gnome.desktop.wm.preferences audible-bell false
     gsettings set org.gnome.desktop.wm.preferences visual-bell false
-}
-
-lock() {
-    . /home/rosatolen/configs/pretty-lock.sh
-}
-
-_sudo () {
-    ARGS="'$@'"
-    printf 'Running: sudo %s in %s\n' "$ARGS" "$PWD"
-    sudo "$@"
-}
-
-### Ack
-
-ackjava() {
-    ack -f --type=java | ack --files-from=- "$@"
-}
-
-ackjson() {
-    ack -f --type=json | ack --files-from=- "$@"
 }
 
 ### Rg
@@ -56,10 +22,6 @@ ackjson() {
 alias rg='rg --hidden'
 
 ### Find
-
-fzvi() {
-    vim "$(fzf)"
-}
 
 fa() {
     FILE="${1:?'Usage fa <name>'}"
@@ -75,10 +37,6 @@ fexact() {
     printf 'Running: find . -name *%s* 2>/dev/null\n' "${1:?'Usage: fl <name>'}"
     find . -name "$1" 2>/dev/null
 }
-
-### Systemd
-
-systemctl_list() { systemctl list-unit-files; }
 
 ### Vim
 
@@ -136,7 +94,7 @@ shell_all_funcs() {
     declare -f
 }
 
-### Profile
+### Profile Management
 
 # shellcheck source=/dev/null
 ep() { vim ~/.profile; . ~/.profile; }
@@ -145,20 +103,6 @@ ep() { vim ~/.profile; . ~/.profile; }
 newp() { . ~/.profile; }
 
 profilecheck() { shellcheck -s sh ~/.profile; }
-
-### Docker
-
-sdocker() { _sudo docker "$@"; }
-
-dubuntu() { docker run --rm -it ubuntu:trusty; }
-
-dprecise() { docker run --rm -it ubuntu:precise; }
-
-dkill() { docker rm  -f "${1:?'Usage: dkill <name>'}";}
-
-dockercleanall() {
-    docker system prune -a
-}
 
 ### Kubectl
 kapplyf() {
@@ -592,11 +536,14 @@ alias gofzf='cd /home/rosatolen/.gopaths/fzf/src/github.com/rosatolen/fzf'
 alias gopfxtooling='cd /home/rosatolen/.gopaths/pfx-tooling/src/github.com/planetfitness/tooling'
 alias gosampleproj='cd /home/rosatolen/.gopaths/sampleproj/src/github.com/rosatolen/sampleproj'
 
-### Rust (not yet installed)
+### Rust
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+. "$HOME/.cargo/env"
 
-# export PATH="$HOME/.cargo/bin:$PATH"
-# . "$HOME"/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
-# . "$HOME"/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
+### Javascript
+# bun
+export BUN_HOME="$HOME/.bun"
+export PATH="$BUN_HOME/bin:$PATH"
 
 ### Direnv
 
@@ -609,28 +556,3 @@ if [ "$SHELL" = "/usr/bin/zsh" ]; then
 else
     eval "$(direnv hook bash)"
 fi
-
-### Java
-
-#export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
-
-edit_vmoptions(){
-    vim ~/.IntelliJIdea2018.1/config/idea64.vmoptions
-}
-
-intellij() {
-    if archlinux-java status | grep -q 'java-8-openjdk (default)'; then
-        bash /opt/intellij-idea-ultimate-edition/bin/idea.sh > /dev/null 2>&1 &
-        return
-    fi
-    printf 'Java 8 is required to run Intellij.\n'
-    printf 'To use Java 8, run: $ sudo archlinux-java set java-8-openjdk\n'
-}
-
-### Postman
-
-postman() {
-    cd ~/Downloads/Postman/ || return 1
-    ./Postman &>/dev/null &
-    cd -
-}

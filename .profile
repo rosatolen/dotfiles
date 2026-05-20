@@ -438,6 +438,7 @@ diceware() {
 gpr() { p github/rosatolen/ssh; git pull -r; }
 gpush() { p github/rosatolen/ssh; git push; }
 gstashcachedsavename() { git stash save "$1" --keep-index; }
+gss() { git status --short; }
 gc() { git commit -m "$@"; }
 gp() { git push origin "$(git branch | grep '*' | cut -d ' ' -f2)"; }
 
